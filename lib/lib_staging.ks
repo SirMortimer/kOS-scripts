@@ -28,8 +28,7 @@ GLOBAL stagingDecouplerModules IS LIST("ModuleDecouple", "ModuleAnchoredDecouple
 // https://en.wikipedia.org/wiki/Specific_impulse
 // https://en.wikipedia.org/wiki/Standard_gravity
 IF NOT (defined isp_g0)
-GLOBAL isp_g0 IS kerbin:mu/kerbin:radius^2. // exactly 9.81 in ksp 1.3.1, 9.80665 for Earth
-// note that constant:G*kerbin:mass/kerbin:radius^2 yields 9.80964723..., correct value could be 9.82
+GLOBAL isp_g0 IS 9.81.
 
 // work variables for staging logic
 GLOBAL stagingNumber   IS -1.     // stage:number when last calling stagingPrepare()

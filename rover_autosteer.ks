@@ -201,7 +201,7 @@ until runmode = -1 {
 		} else {
 			if not warping {
 				set warping to true.
-				physWarp(1).
+				// disabled physWarp(1).
 			}
 			if FollowingVessel or Waypoints:EMPTY() {
 				// If following a vessel or have just one waypoint, use the distance from they to compute speed and braking.
