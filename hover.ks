@@ -2,8 +2,7 @@ set ship:control:pilotmainthrottle to 0.
 set thr to 0.
 lock throttle to thr.
 
-// descend at -0.2 to -10 m/s
-lock setpoint to MIN(-0.2, MAX(-10, -alt:radar / 5)).
+lock setpoint to MIN(-0.5, MAX(-50, -alt:radar / 5)).
 
 function print_status {
 	clearscreen.
@@ -19,12 +18,23 @@ set Kd to 0.005.
 set hoverPID to PIDLOOP(Kp, Ki, Kd).
 
 set touchdown to false.
-when alt:radar < 5 and ship:verticalspeed >= 0 set touchdown to true.
-when alt:radar < 10 gear on.
 
-lock steering to up.
+when alt:radar < 5 and ship:verticalspeed >= 0 then set touchdown to true.
+when alt:radar < 10 then gear on.
+when alt:radar < 15 then lock steering to up.
+when ship:verticalspeed > -0.1 then { lock steering to up. preserve. }
+when ship:verticalspeed < -10 then { lock steering to srfretrograde. preserve. }
+
+lock steering to srfretrograde.
 sas off.
 rcs on.
+
+set thr to 1.
+until setpoint - ship:verticalspeed > -5 {
+	print_status.
+	wait 0.001.
+}
+set thr to 0.
 
 until touchdown {
         set thr to thr + hoverPID:UPDATE(TIME:SECONDS, ship:verticalspeed - setpoint).
